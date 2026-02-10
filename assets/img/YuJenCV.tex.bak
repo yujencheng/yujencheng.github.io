@@ -1,0 +1,580 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% NOTE: If you find that it says                                     %%
+%%                                                                    %%
+%%                           1 of ??                                  %%
+%%                                                                    %%
+%% at the bottom of your first page, this means that the AUX file     %%
+%% was not available when you ran LaTeX on this source. Simply RERUN  %%
+%% LaTeX to get the ``??'' replaced with the number of the last page  %%
+%% of the document. The AUX file will be generated on the first run   %%
+%% of LaTeX and used on the second run to fill in all of the          %%
+%% references.                                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+\usepackage{comment}
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+                {\large \bfseries #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+        {\pagebreak[2]\vspace{1.3\baselineskip}%
+         \phantomsection\addcontentsline{toc}{section}{#1}%
+         \hspace{0in}%
+         \marginpar{
+         \raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{compactitem}[#1]}{\end{compactitem}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[2]}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Yu-Jen Cheng}
+
+\section{Contact Information}
+%
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.85in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+\href{http://www.biostat.jhsph.edu/}%
+{Professor}&\\
+{Institute of Statistics} & \textit{Phone:} 886-3-5715131-33189 \\
+\href{http://www.jhsph.edu/}{National Tsing-Hua University}
+                           &\textit{Fax:} 886-3-5728318 \\
+Room 817, General Building III &\textit{E-mail:}\\
+\href{mailto:ycheng@stat.nthu.edu.tw} Hsin-Chu,Taiwan 300044
+&{ycheng@stat.nthu.edu.tw}
+\\
+  \end{tabular}
+
+
+\begin{comment}
+\section{Citizenship}
+%
+Taiwan
+\end{comment}
+\section{Research Interests}
+%
+Biased Sampling; Causal Inference; Information Synthesis; Measurement Error; Recurrent events; Statistical Learning; Survival analysis
+
+\section{Education}
+%
+\begin{innerlist}
+\item[-] Ph.D.,
+        \href{http://www.biostat.jhsph.edu/people/student/cheng.shtml}
+       {Department of Biostatistics, Johns Hopkins University}, \hfill \textbf{May 2009}
+\begin{comment}
+\item[] Military Service, \hfill \textbf{August 2001 to July 2003}
+\item[] M.S.,
+        \href{http://www.stat.nthu.edu.tw/}
+             {Institute of Statistics, National Tsing-Hua University}, \hfill \textbf{September 1999 to June 2001}
+\item[] B.S.,
+        \href{http://www.math.nthu.edu.tw/}
+             {Mathematics, National Tsing-Hua University}, \hfill \textbf{September 1995 to June 1999}
+\end{comment}
+\end{innerlist}
+
+\section{Professional Experience}
+%
+\begin{innerlist}
+\item[-] Professor,
+ \href{http://www.stat.nthu.edu.tw/}
+{Institute of Statistics, National Tsing-Hua University}, \hfill \textbf{August 2023 to Present}
+\item[-] Associate Professor,
+ \href{http://www.stat.nthu.edu.tw/}
+{Institute of Statistics, National Tsing-Hua University}, \hfill \textbf{August 2014 to July 2023}
+\item[-] Assistant Professor,
+ \href{http://www.stat.nthu.edu.tw/}
+{Institute of Statistics, National Tsing-Hua University}, \hfill \textbf{August 2009 to July 2014}
+\end{innerlist}
+
+\section{Awards}
+%
+\begin{innerlist}
+%\item[-] Flexible Salary for Outstanding Faculty and Research Staff at National Tsing Hua University (2022-2023, 2017-2020, 2015)
+\item[-] Project for Excellent Junior Research Investigators, Ministry of Science Technology (2021)
+%\item[-] High Quality Research Award at National Tsing Hua University (2021)
+%\item[-] Research Incentive, National Tsing Hua University (2012-2014, 2010)
+%\item[-] Research Paper Publication Award, National Tsing Hua University (2013)
+\item[-] \href{http://www.amstat.org/} {SIE Graduate Student Award, ASA Statistics in Epidemiology Section}, 2009
+\item[-] \href{http://www.enar.org/} {Distinguished Student Paper Award, International Biometric Society's Eastern
+North American Region (ENAR)}, 2009
+\end{innerlist}
+
+\section{Academic activities}
+%
+Journal Referee:
+\begin{innerlist}
+\item[-]
+Biometrical Journal, Biometrics, Biometrika, Biostatistics, Computational Statistics \& Data Analysis, Journal of Multivariate Analysis, Journal of Nonparametric Statistics, Journal of Statistical Planning and Inference, Journal of the American Statistical Association, Journal of the Royal Statistical Society: Series B, Journal of the Royal Statistical Society: Series C, Lifetime Data Analysis, Statistics in Medicine, Statistical Methodology, Statistics \& Probability Letters, Scientific Reports, Statistica Sinica
+\end{innerlist}
+
+
+\section{Grant Review Services}
+%
+
+\begin{innerlist}
+\item[-]
+Ministry of Science and Technology Grant
+\item[-]
+Medical Research Council Grant
+\item[-]
+Israel Science Foundation
+\end{innerlist}
+\section{Publications}
+%
+$\dag$ represents student author under Yu-Jen Cheng's supervision; $*$ represents Yu-Jen Cheng as corresponding author.
+\begin{enumerate}
+\item \textbf{Yu-Jen Cheng*}, Yen-Chun Liu$^{\dag}$, Chang-Yu Tsai, and Chiung-Yu Huang (2022, Accepted). Semiparametric Estimation of the Transformation Model by Leveraging External Aggregate Data in the Presence of Population Heterogeneity. Biometrics. DOI: 10.1111/biom.13778.
+\item	Chien-Tong Lin$^{\dag}$, \textbf{Yu-Jen Cheng*} and Ching-Kang Ing. Greedy variable selection for high-dimensional Cox models. {\it Statistica Sinica}, 1697-1719, 2023.
+
+\item \textbf{Yu-Jen Cheng*}, Mei-Cheng Wang and Chang-Yu Tsai$^{\dag}$. {Estimations of the joint distribution of failure time and failure type with dependent truncation.} {\it Biometrics}, 428-438, 2019.
+\item Hsiang Yu$^{\dag}$, \textbf{Yu-Jen Cheng*} and Ching-Yun Wang. {Methods for Multivariate Recurrent Event Data with Measurement Error and Informative Censoring.} {\it Biometrics}, 966-976, 2018.
+\item Hsiang Yu$^{\dag}$, \textbf{Yu-Jen Cheng*} and Ching-Yun Wang. {Semiparametric Regression Estimation for Recurrent Event Data with Errors in Covariates under Informative Censoring.} {\it The International Journal of Biostatistics}, Nov 1;12(2), 2016.
+\item \textbf{Yu-Jen Cheng*} and Mei-Cheng Wang. {Causal estimation using the semiparametric transformation models under prevalent sampling.} {\it Biometrics}, 302-312, 2015.
+\item \textbf{Yu-Jen Cheng*} and Chiung-Yu Huang. {Combined estimating equation approaches for semiparametric transformation models with length-biased survival data.} {\it Biometrics}, 608-618, 2014.
+\item
+\textbf{Yu-Jen Cheng*} and Mei-Cheng Wang. {Estimating propensity scores and causal survival functions using prevalent survival data.} {\it Biometrics}, 707-716, 2012.
+\item
+G. Nestadt*, C. Di, J. F. Samuels, \textbf{Yu-Jen Cheng}, O. J. Bienvenu, I. M. Reti, P. Costa, W. W. Eaton and K. Bandeen-Roche. {Concordance between personality disorder assessment methods.} {\it Psychological Medicine}, 657-667, 2012.
+\item
+Irving M. Reti*, Jerry Z. Xu, Jason Yanofski, Jodi McKibben, Magdalena Uhart, \textbf{Yu-Jen Cheng}, Peter Zandi, Oscar J. Bienvenu, Jack Samuels, Virginia Willour, Laura Kasch-Semenza, Paul Costa, Karen Bandeen-Roche, William W. Eaton, Gerald Nestadt. {Monoamine oxidase A regulates antisocial personality in whites with no history of physical abuse.} {\it Comprehensive Psychiatry}, 52:188-194, 2011.
+\item
+Veronica Rolim S Fernandes, Susan Cheng, \textbf{Yu-Jen Cheng}, Boaz Rosen, Sachin Agarwal, Robyn L McClelland, David A Bluemke, Joao A C Lima*. { Racial and ethnic differences in subclinical myocardial function: the Multi-Ethnic Study of Atherosclerosis.} {\it Heart}, 97:405-410, 2011.
+\item
+\textbf{Yu-Jen Cheng*} and Ciprian M. Crainiceanu. {Cox models with smooth functional effect of covariates measured with errors.} {\it Journal of the American Statistical Association}, 104, 1144-1154, 2009. %[\textbf{ENAR Distinguished Student Paper}]
+\item
+Andrea Carlson Gielen*, Lara B McKenzie, Eileen M McDonald, Wendy C Shields, Mei-Cheng Wang, \textbf{Yu-Jen Cheng}, Nancy L Weaver, Allen R Walker. {Using a computer kiosk to promote child safety: results of a randomized, controlled trial in an urban pediatric emergency department.} {\it Pediatrics}, 2007 Aug; 120 (2):330-9.
+\end{enumerate}
+\section{Abstract}
+%
+\begin{enumerate}
+         \item
+         Veronica R Fernandes, Sachin Agarwal, \textbf{Yu-Jen Cheng}, Ciprian M Crainiceanu, Robyn McClelland, David A Bluemke, Joao A Lima, {\it Race/Ethnic Relationship with Regional Myocardial Function in an Adult Asymptomatic Population for Cardiovascular Disease: A Tagged MRI Study of the MESA Cohort}, Circulation. 2006; 114:II\_538-II\_539
+         \item
+         Veronica R Fernandes, Boaz D Rosen, Susan Cheng, \textbf{Yu-Jen Cheng}, Hossein Bahrami, Robyn L McClelland, Antoinette Gomes, David A Bluemke, Joao A Lima, {\it Diabetes Mellitus as a Predictor of Decreased Regional Myocardial Function in an Adult Population without Clinical Cardiovascular Disease: The Tagged MRI Follow-up Study of the Multi-Ethnic Study of Atherosclerosis (MESA)}, Circulation. 2007; 116:II\_826
+\end{enumerate}
+
+
+\section{Grant Funding}
+\begin{innerlist}
+\item[-] 2023-2025	Improving the efficiency of estimation by synthesizing the external information in the presence of population heterogeneity (112-2118-M-007-004-MY2).Role: PI.
+\item[-] 2021-2023	Statistical analysis for recurrent event data with informative censoring and time-dependent covariates (110-2628-M-007-003-MY2).Role: PI.
+\item[-] 2020-2021	Methods for Estimating Causal Treatment Effects with Sampling Bias (109-2118-M-007-003).Role: PI.
+\item[-] 2018-2020	Analysis of univariate and bivariate recurrent event data with informative censoring (107-2118-M-007-007-MY2).Role: PI.
+\item[-]
+2016-2018 Combined estimating equation approaches for semiparametric
+transformation cure models with prevalent survival data	
+(MOST 105-2118-M-007-005-MY2). Role: PI.
+\item[-]
+2015-2016 Analyzing recurrent event and survival data with error-prone
+covariates under informative censoring (MOST 104-2118-M-007-002). Role: PI.
+\item[-]
+2014-2015 Competing Risks Models with Temporal Cause Probability for Prevalent Survival Data
+(MOST 103-2118-M-007-003). Role: PI.
+\item[-]
+2013-2014 Estimation on the semiparametric transformation models with length-biased data
+(MOST 102-2118-M-007-003).Role: PI.
+\item[-]
+2012-2013 Causal Estimation for Semiparametric Transformation Models with Dependent
+Truncated-Survival Data (MOST 101-2118-M-007-004).Role: PI.
+\item[-]
+2011-2012 Mixture Cure Model with Prevalent Sampling (MOST 100-2118-M-007-003).Role: PI.
+\item[-]
+2010-2011 Double-Robust Estimation and Stratification Analaysis for Causal Inference with
+Truncated Survival Data (MOST 99-2118-M-007-003).Role: PI.
+\item[-]
+2009-2010 Marginal Causal Estimation for Truncated Survival Data (MOST 98-2118-M-007-003).Role:
+PI.
+\end{innerlist}
+\begin{comment}
+\section{Graduate Student Supervision}
+Current Ph.D. students:
+\begin{innerlist}
+\item[]
+Hsiang Yu
+ \item[]
+ Chang-Yu Tsai
+ \item[]
+ Chien-Tung Lin
+ \item[]
+Sheng-Tao Yang
+ \end{innerlist}
+Current master students:
+\begin{innerlist}
+\item[]
+Cheng-Han Yang
+\item[]
+Ko-Han Pan
+\end{innerlist}
+\begin{comment}
+Completed PhD Students:
+\begin{innerlist}
+\item[]
+2014	Jih-Chang Yu: Semiparametric maximum likelihood estimation of transformation model under length biased sampling
+\end{innerlist}
+Completed Master Students:
+\begin{innerlist}
+\item[]
+2014 Kai-Wen Chen: Model selection for semiparametric transformation models with prevalent survival data\\
+2014 Ya-Ling Ko: Model selection for semiparametric transformation models with length-biased data
+\item[]
+2013	Meng-Tang Pan: Semiparametric transformation cure models with length-biased data\\
+2013	I-Cheng Chen: Partially linear transformation model for prevalent survival data with nonlinear temporal trends
+\item[]
+2012	Chang-Yu Tsai: Semiparametric analysis for mixture cure model using prevalent survival data\\
+2012    Ting-Yu Lu: Analysis of panel count data under informative censoring with measurement error\\
+2012    Li-Feng Huang: A composite likelihood estimator for generalized linear model under biased sampling
+\item[]
+2011	Hsiang Yu: Semiparametric model for recurrent event with informative censoring and measurement error
+\end{innerlist}
+
+\section{PhD committee member}
+Preliminary oral participation
+\begin{innerlist}
+\item[]
+Shang-I Lin
+\item[]
+Yi-Ting Wang
+\item[]
+Jih-Chang Yu
+\item[]
+Tsung-Chen Hsieh
+\item[]
+Yu-Wei Chang
+\item[]
+Li-Hsin Chien
+\item[]
+Tzu-Yu Chen
+\item[]
+Kuang-Hui Ma
+\end{innerlist}
+
+Final oral participation
+\begin{innerlist}
+\item[]
+Chun-Huo Chiu
+\item[]
+Chieh-Hui Wang
+\item[]
+Shang-I Lin
+\item[]
+Yi-Ting Wang
+\item[]
+Feng-Ju Hsu
+\item[]
+Tsung-Chen Hsieh
+\item[]
+Jih-Chang Yu
+\end{innerlist}
+
+\section{Master committee member}
+More than 10 students\bigskip
+
+
+
+\section{Teaching}
+\begin{innerlist}
+\item[]
+Fall 2014,        Statistics (I)
+\item[]
+Spring 2014,      Statistics (II)
+\item[]
+Spring 2014,      Survival Analysis
+\item[]
+Fall 2013,        Statistics (I)
+\item[]
+Spring 2013,      Practicing Statistics
+\item[]
+Spring 2013,      Seminar
+\item[]
+Fall 2012,		    Survival Analysis   		
+\item[]
+Fall 2012,		    Practicing Statistics 		
+\item[]
+Fall 2012,		    Seminar	
+\item[]
+Spring 2012,		Discrete Analysis	
+\item[]
+Fall 2011,	        Survival Analysis		
+\item[]
+Fall 2011,	        Introduction to Statistics
+\item[]
+Spring 2011,      Introduction to Biostatistics
+\item[]
+Spring 2011,      Incomplete and correlated Data Analysis
+\item[]
+Fall 2010,        Survival Analysis
+\item[]
+Spring 2010	    Longitudinal Data Analysis	
+\item[]
+Fall 2009,		    Survival Analysis
+\end{innerlist}
+
+\section{Grant Funding}
+%
+\begin{innerlist}
+\item
+Competing risks models with temporal cause probability for prevalent survival data (103-2118-M-007-003).Role: PI.\\ Period: 2014-2015
+\item
+Estimation on the semiparametric transformation models with length-biased data (102-2118-M-007-003).Role: PI.\\ Period: 2013-2014
+\item
+Causal Estimation for Semiparametric Transformation Models with Dependent Truncated-Survival Data (101-2118-M-007-004).Role: PI.\\ Period: 2012-2013	 \item
+Mixture Cure Model with Prevalent Sampling (100-2118-M-007-003).Role: PI.\\ Period: 2011-2012	
+\item
+Double-Robust Estimation and Stratification Analysis for Causal Inference with Truncated Survival Data (99-2118-M-007-003).Role: PI.\\ Period: 2010-2011
+\item
+Marginal Causal Estimation for Truncated Survival Data (98-2118-M-007-003).Role: PI.\\ Period: 2009-2010
+\end{innerlist}
+
+\section{Invited Talk in Departmental Seminars}
+\begin{enumerate}
+\item
+March 2010. Institute of Statistics, National University of Kaohsiung, Taiwan. ``Causal Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+April 2010. Department of Statistics, Tamkang University, Taiwan. ``Causal Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+April 2010. Department of Statistics, National Cheng Kung University, Taiwan. ``Causal Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+August 2010. National Health Research Institutes, Taiwan. ``Causal Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+October 2010. Graduate Institute of Statistics, National Central University, Taiwan. Causal ``Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+November 2010. Department of Mathematics, National Chung Cheng University, Taiwan. ``Causal Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+March 2011. Department of Mathematics, National Taiwan University, Taiwan. ``Analysis of Prevalent Survival Data"
+\item
+April 2011. Department of Statistics, Feng Chia University, Taiwan. ``Analysis of Prevalent Survival Data"
+\item
+December 2011. Department of Mathematics, Tamkang University, Taiwan. ``Analysis of Prevalent Survival Data"
+\end{enumerate}
+
+\section{Presentation at Conferences}
+\begin{enumerate}
+\item
+July 2010. 19th South Taiwan Statistics Conference, Taiwan. ``Causal Estimation for the Proportional Hazard Model with Prevalent Sampling"
+\item
+August 2010. Joint Statistical Meeting, Vancouver Canada. ``Nonparametric Methods of Mixture Model with Prevalent Sampling"
+\item
+June 2011. 20th South Taiwan Statistics Conference, Taiwan. ``Analysis of Prevalent Survival Data"
+\item
+August 2011. The 32nd Annual Conference of the International Society for Clinical Biostatistics, Ottawa Canada. ``Analysis of Prevalent Survival Data"
+\item
+December 2011. 2011 Taipei International Statistical Symposium, Academia Sinica, Taiwan. ``Nonparametric Methods of Mixture Model with Prevalent Sampling"
+\item
+July 2012. 2nd IMS-APRM (Institute of Mathematical Statistics Asia Pacific Rim Meeting), Tsukuba Japan. ``Analysis of Prevalent Survival Data"
+\item
+August 2012. Joint Statistical Meeting, San Diego, ``Analysis of Prevalent Survival Data for Causal Inference"
+\item
+December 2012. Annual Meeting of the Taiwan Mathematical Society, National Chiao Tung University, Taiwan. ``Causal Estimations of the Semiparametric Transformation Models with Prevalent Sampling"
+\item
+June 2013. 22th South Taiwan Statistics Conference, Taiwan. ``Estimation on the semiparametric transformation models with length-biased data"
+\item
+August 2013. Joint Statistical Meeting, Montreal. ``Estimation on the semiparametric transformation models with length-biased data"
+\item
+August 2014. Joint Statistical Meeting, Boston. ``A class of semiparametric mixture cure survival models with prevalent survival data"
+\end{enumerate}
+\end{comment}
+\section{Computing Skills}
+Splus/R
+
+\section{Languages}
+Chinese and English
+
+
+\section{Professional Activities}
+\begin{itemize}
+       \item
+        American Statistical Association (ASA)
+\end{itemize}
+%\section{CONTACTS FOR LETTERS OF RECOMMENDATION}
+%\begin{itemize}
+%         \item
+%Dr. Mei-Cheng Wang, Dissertation Advisor\\
+%Professor\\
+%Department of Biostatistics\\
+%Bloomberg School of Public Health\\
+%The Johns Hopkins University\\
+%Baltimore, Maryland\\
+%Phone: (410) 955-7775  Fax: (410) 955-0958\\
+%Email: mcwang@jhsph.edu\\
+
+% \item
+%Dr. Ciprian M. Crainiceanu, Dissertation Co-Advisor\\
+%Associate Professor\\
+%Department of Biostatistics\\
+%Bloomberg School of Public Health\\
+%The Johns Hopkins University\\
+%Baltimore, Maryland\\
+%Phone: (410) 955-3505  Fax: (410) 955-0958\\
+%Email:  ccrainic@jhsph.edu \\
+
+% \item
+%Dr. Karen Bandeen-Roche\\
+%Chair and Professor\\
+%Department of Biostatistics\\
+%Bloomberg School of Public Health\\
+%The Johns Hopkins University\\
+%Baltimore, Maryland\\
+%Phone: (410) 955-1166 Fax: (410) 955-0958\\
+%Email: kbandeen@jhsph.edu\\
+%\end{itemize}
+
+\begin{comment}
+\begin{footnotesize}
+Last updated: \today \\
+\end{footnotesize}
+\bigskip
+\end{comment}
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
